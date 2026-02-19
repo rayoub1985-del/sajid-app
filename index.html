@@ -3,75 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajid - Votre Compagnon</title>
+    <title>Sajid - Compagnon de Prière</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Amiri&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .arabic { font-family: 'Amiri', serif; }
+        body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
+        .arabic { font-family: 'Amiri', serif; direction: rtl; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
     </style>
 </head>
-<body class="bg-slate-50">
+<body class="bg-slate-50 text-slate-900">
     <div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-xl flex flex-col relative">
-        <header class="p-6 flex justify-between items-center">
+        
+        <header class="p-6 flex justify-between items-center border-b border-gray-50">
             <div>
                 <h1 class="text-3xl font-black text-emerald-600">Sajid</h1>
-                <p class="text-[10px] font-bold uppercase opacity-40">Mon Compagnon de Prière</p>
+                <p id="subtitle" class="text-[10px] font-bold uppercase opacity-40">Mon Compagnon de Prière</p>
             </div>
-            <div class="bg-emerald-50 p-2 rounded-xl text-emerald-600">
-                <i class="fas fa-moon"></i>
-            </div>
+            <button onclick="toggleTheme()" class="bg-emerald-50 w-10 h-10 rounded-xl text-emerald-600">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
         </header>
 
-        <main class="flex-1 p-6 space-y-6">
-            <div class="bg-emerald-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-lg">
-                <div class="relative z-10">
-                    <p class="opacity-80 font-medium">Prochaine Prière : Dhuhr</p>
-                    <h2 class="text-5xl font-black mt-2">12:35</h2>
-                    <p class="text-xs mt-4 opacity-70"><i class="fas fa-location-dot"></i> Casablanca, MA</p>
+        <main class="flex-1 p-6 overflow-y-auto pb-24">
+            
+            <div id="home" class="tab-content active space-y-6">
+                <div class="bg-emerald-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-lg">
+                    <div class="relative z-10">
+                        <p class="opacity-80 font-medium">Prochaine Prière : Dhuhr</p>
+                        <h2 class="text-5xl font-black mt-2">12:35</h2>
+                        <p class="text-xs mt-4 opacity-70"><i class="fas fa-location-dot"></i> Casablanca, MA</p>
+                    </div>
+                    <i class="fas fa-mosque absolute -bottom-4 -right-4 text-9xl opacity-10"></i>
                 </div>
-                <i class="fas fa-mosque absolute -bottom-4 -right-4 text-9xl opacity-10"></i>
+
+                <div class="space-y-3" id="prayer-list">
+                    <div class="flex justify-between items-center p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
+                        <span class="font-bold text-emerald-800">Fajr</span>
+                        <span class="font-black">05:42</span>
+                    </div>
+                    <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+                        <span class="font-bold">Dhuhr</span>
+                        <span class="font-black">12:35</span>
+                    </div>
+                    <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+                        <span class="font-bold">Asr</span>
+                        <span class="font-black">15:58</span>
+                    </div>
+                    <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+                        <span class="font-bold">Maghrib</span>
+                        <span class="font-black">18:12</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="space-y-3">
-                <div class="flex justify-between items-center p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
-                    <span class="font-bold text-emerald-800">Fajr</span>
-                    <span class="font-black">05:42</span>
+            <div id="tasbih" class="tab-content space-y-8 text-center py-10">
+                <h2 class="text-2xl font-black">Tasbih Numérique</h2>
+                <div onclick="countTasbih()" class="w-64 h-64 mx-auto rounded-full border-[10px] border-emerald-100 flex items-center justify-center bg-white shadow-2xl cursor-pointer active:scale-95 transition-all">
+                    <span id="counter" class="text-7xl font-black text-emerald-600">0</span>
                 </div>
-                <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
-                    <span class="font-bold">Dhuhr</span>
-                    <span class="font-black">12:35</span>
+                <div class="flex justify-center space-x-4">
+                    <button onclick="resetTasbih()" class="px-6 py-2 bg-slate-100 rounded-full font-bold text-slate-500">Réinitialiser</button>
                 </div>
-                <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
-                    <span class="font-bold">Asr</span>
-                    <span class="font-black">15:58</span>
-                </div>
-                <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
-                    <span class="font-bold">Maghrib</span>
-                    <span class="font-black">18:12</span>
-                </div>
+                <p class="text-sm opacity-50">Total aujourd'hui: <span id="total-tasbih">0</span></p>
             </div>
+
+            <div id="assistant" class="tab-content space-y-4">
+                <div class="bg-emerald-50 p-4 rounded-2xl text-sm text-emerald-800 border border-emerald-100">
+                    <strong>Sajid AI :</strong> Salam ! Je suis ton assistant. Comment puis-je t'aider aujourd'hui ?
+                </div>
+                <input type="text" placeholder="Posez une question..." class="w-full p-4 rounded-xl border bg-gray-50 outline-none focus:border-emerald-500">
+            </div>
+
         </main>
 
-        <nav class="p-4 border-t flex justify-around items-center bg-white sticky bottom-0">
-            <div class="flex flex-col items-center text-emerald-600">
+        <nav class="p-4 border-t flex justify-around items-center bg-white fixed bottom-0 left-0 right-0 max-w-md mx-auto rounded-t-3xl shadow-2xl">
+            <button onclick="showTab('home')" class="nav-btn flex flex-col items-center text-emerald-600">
                 <i class="fas fa-home text-xl"></i>
                 <span class="text-[9px] font-bold mt-1">ACCUEIL</span>
-            </div>
-            <div class="flex flex-col items-center text-slate-400">
+            </button>
+            <button onclick="showTab('tasbih')" class="nav-btn flex flex-col items-center text-slate-400">
                 <i class="fas fa-beads text-xl"></i>
                 <span class="text-[9px] font-bold mt-1">TASBIH</span>
-            </div>
-            <div class="flex flex-col items-center text-slate-400">
-                <i class="fas fa-book-quran text-xl"></i>
-                <span class="text-[9px] font-bold mt-1">CORAN</span>
-            </div>
-            <div class="flex flex-col items-center text-slate-400">
+            </button>
+            <button onclick="showTab('assistant')" class="nav-btn flex flex-col items-center text-slate-400">
                 <i class="fas fa-comment-dots text-xl"></i>
                 <span class="text-[9px] font-bold mt-1">SAJID AI</span>
-            </div>
+            </button>
         </nav>
     </div>
+
+    <script>
+        // NAVIGATION ENTRE LES ONGLETS
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.replace('text-emerald-600', 'text-slate-400'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.replace('text-slate-400', 'text-emerald-600');
+        }
+
+        // COMPTEUR TASBIH
+        let count = 0;
+        let total = 0;
+        function countTasbih() {
+            count++;
+            total++;
+            document.getElementById('counter').innerText = count;
+            document.getElementById('total-tasbih').innerText = total;
+            if(count >= 33) {
+                if (navigator.vibrate) navigator.vibrate(200);
+                count = 0;
+            }
+        }
+        function resetTasbih() {
+            count = 0;
+            document.getElementById('counter').innerText = 0;
+        }
+
+        // MODE NUIT
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            if(body.classList.contains('bg-slate-50')) {
+                body.classList.replace('bg-slate-50', 'bg-slate-900');
+                body.classList.add('text-white');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                body.classList.replace('bg-slate-900', 'bg-slate-50');
+                body.classList.remove('text-white');
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+    </script>
 </body>
 </html>
