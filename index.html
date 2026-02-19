@@ -3,339 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajid - Votre Compagnon de Prière</title>
-    
-    <!-- CDNs pour un fonctionnement sans installation -->
+    <title>Sajid - Votre Compagnon</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Amiri&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        .arabic-font { font-family: 'Amiri', serif; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-in { animation: fade-in 0.4s ease-out forwards; }
-        
-        /* Personnalisation Tailwind */
-        .bg-sajid-emerald { background-color: #10b981; }
-        .text-sajid-emerald { color: #10b981; }
+        .arabic { font-family: 'Amiri', serif; }
     </style>
-
-    <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@19.2.4",
-    "react-dom": "https://esm.sh/react-dom@19.2.4",
-    "react-dom/client": "https://esm.sh/react-dom@19.2.4/client",
-    "react-router-dom": "https://esm.sh/react-router-dom@7.13.0",
-    "@google/genai": "https://esm.sh/@google/genai@1.41.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/"
-  }
-}
-</script>
 </head>
-<body class="bg-slate-50 transition-colors duration-300">
-    <div id="root"></div>
+<body class="bg-slate-50">
+    <div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-xl flex flex-col relative">
+        <header class="p-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-black text-emerald-600">Sajid</h1>
+                <p class="text-[10px] font-bold uppercase opacity-40">Mon Compagnon de Prière</p>
+            </div>
+            <div class="bg-emerald-50 p-2 rounded-xl text-emerald-600">
+                <i class="fas fa-moon"></i>
+            </div>
+        </header>
 
-    <script type="module">
-        import React, { useState, useEffect, createContext, useContext, useRef, useMemo } from 'react';
-        import { createRoot } from 'react-dom/client';
-        import { HashRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
-        import { GoogleGenAI } from '@google/genai';
-
-        // --- 1. DONNÉES ET TRADUCTIONS ---
-        const translations = {
-            ar: {
-                dir: 'rtl', font: 'arabic-font', appName: 'ساجد', appSubtitle: 'رفيقي في الصلاة',
-                home: 'الرئيسية', tasbih: 'تسبيح', library: 'المكتبة', assistant: 'مساعد', qibla: 'القبلة',
-                nextPrayer: 'الصلاة القادمة', in: 'بعد', prayerTimes: 'مواقيت الصلاة', inspirationTitle: 'إلهام اليوم',
-                hijri: 'هجري', miladi: 'ميلادي', digitalTasbih: 'تسbiح رقمي', total: 'المجموع',
-                searchDua: 'ابحث عن دعاء...', quran: 'القرآن', azkar: 'الأذكار', assistantIntro: 'سلام! أنا ساجد، مساعدك الروحي. كيف يمكنني مساعدتك؟',
-                askQuestion: 'اسأل سؤالك...', reps: 'تكرار', loading: 'جاري التحميل...', categories: { All: 'الكل', Prophets: 'الأنبياء', Quranic: 'قرآنية' }
-            },
-            fr: {
-                dir: 'ltr', font: 'font-sans', appName: 'Sajid', appSubtitle: 'Mon Compagnon de Prière',
-                home: 'Accueil', tasbih: 'Tasbih', library: 'Bibliothèque', assistant: 'Assistant', qibla: 'Qibla',
-                nextPrayer: 'Prochaine Prière', in: 'dans', prayerTimes: 'Horaires de prière', inspirationTitle: 'Inspiration du jour',
-                hijri: 'Hijri', miladi: 'Miladi', digitalTasbih: 'Tasbih Numérique', total: 'Total',
-                searchDua: 'Rechercher...', quran: 'Coran', azkar: 'Azkar', assistantIntro: "Salam ! Je suis Sajid, ton assistant spirituel. Comment puis-je t'aider ?",
-                askQuestion: 'Posez votre question...', reps: 'Rép.', loading: 'Chargement...', categories: { All: 'Tout', Prophets: 'Prophètes', Quranic: 'Coranique' }
-            },
-            en: {
-                dir: 'ltr', font: 'font-sans', appName: 'Sajid', appSubtitle: 'My Prayer Companion',
-                home: 'Home', tasbih: 'Tasbih', library: 'Library', assistant: 'Assistant', qibla: 'Qibla',
-                nextPrayer: 'Next Prayer', in: 'in', prayerTimes: 'Prayer Times', inspirationTitle: 'Daily Inspiration',
-                hijri: 'Hijri', miladi: 'Miladi', digitalTasbih: 'Digital Tasbih', total: 'Total',
-                searchDua: 'Search...', quran: 'Quran', azkar: 'Azkar', assistantIntro: "Salam! I am Sajid, your spiritual assistant. How can I help you?",
-                askQuestion: 'Ask a question...', reps: 'Reps', loading: 'Loading...', categories: { All: 'All', Prophets: 'Prophets', Quranic: 'Quranic' }
-            }
-        };
-
-        const LanguageContext = createContext();
-        const ThemeContext = createContext();
-
-        // --- 2. SERVICE IA ---
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        const langNames = { ar: 'arabe', fr: 'français', en: 'anglais' };
-
-        const getDailyInspiration = async (lang) => {
-            try {
-                const response = await ai.models.generateContent({
-                    model: 'gemini-3-flash-preview',
-                    contents: `Donne une courte citation inspirante islamique en ${langNames[lang]}. Format JSON: {"text": "...", "source": "..."}`,
-                    config: { responseMimeType: "application/json" }
-                });
-                return JSON.parse(response.text);
-            } catch (e) { return null; }
-        };
-
-        const chatWithAssistant = async (history, message, lang) => {
-            try {
-                const response = await ai.models.generateContent({
-                    model: 'gemini-3-flash-preview',
-                    contents: [...history, { role: 'user', parts: [{ text: message }] }],
-                    config: { systemInstruction: `Tu es Sajid, un assistant spirituel bienveillant. Réponds en ${langNames[lang]}.` }
-                });
-                return response.text;
-            } catch (e) { return "Désolé, je rencontre une petite difficulté."; }
-        };
-
-        // --- 3. COMPOSANTS ---
-
-        const Home = () => {
-            const { t, lang } = useContext(LanguageContext);
-            const { darkMode } = useContext(ThemeContext);
-            const [now, setNow] = useState(new Date());
-            const [inspiration, setInspiration] = useState({ text: lang === 'ar' ? "الصبر مفتاح الفرج" : "La patience est la clé du succès.", source: "Hadith" });
-
-            useEffect(() => {
-                const timer = setInterval(() => setNow(new Date()), 1000);
-                getDailyInspiration(lang).then(d => d && setInspiration(d));
-                return () => clearInterval(timer);
-            }, [lang]);
-
-            const prayers = [
-                { name: lang === 'ar' ? 'الفجر' : 'Fajr', time: '05:42', icon: 'fa-sun-low' },
-                { name: lang === 'ar' ? 'الظهر' : 'Dhuhr', time: '12:35', icon: 'fa-sun', isNext: true },
-                { name: lang === 'ar' ? 'العصر' : 'Asr', time: '15:58', icon: 'fa-cloud-sun' },
-                { name: lang === 'ar' ? 'المغرب' : 'Maghrib', time: '18:12', icon: 'fa-moon' },
-                { name: lang === 'ar' ? 'العشاء' : 'Isha', time: '19:45', icon: 'fa-star-and-crescent' },
-            ];
-
-            return (
-                <div className="space-y-6 animate-in">
-                    <div className={`p-4 rounded-3xl border shadow-sm flex justify-around items-center ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'}`}>
-                        <div className="text-center">
-                            <p className="text-[10px] uppercase font-black opacity-30">{t.hijri}</p>
-                            <p className="font-bold arabic-font text-lg">{new Intl.DateTimeFormat(lang === 'ar' ? 'ar-SA-u-ca-islamic-umalqura' : lang + '-u-ca-islamic-umalqura').format(now)}</p>
-                        </div>
-                        <div className="w-px h-8 bg-gray-200"></div>
-                        <div className="text-center">
-                            <p className="text-[10px] uppercase font-black opacity-30">{t.miladi}</p>
-                            <p className="font-bold text-sm">{now.toLocaleDateString(lang, { day: 'numeric', month: 'long' })}</p>
-                        </div>
-                    </div>
-
-                    <div className={`rounded-[2.5rem] p-8 relative overflow-hidden shadow-lg ${darkMode ? 'bg-emerald-900' : 'bg-emerald-600 text-white'}`}>
-                        <div className="relative z-10">
-                            <p className="font-bold opacity-80">{t.nextPrayer} : Dhuhr</p>
-                            <h2 className="text-5xl font-black mt-2">01:45</h2>
-                            <p className="text-xs mt-4 font-bold opacity-70"><i className="fas fa-location-dot mr-2"></i> Paris, FR</p>
-                        </div>
-                        <i className="fas fa-mosque absolute -bottom-4 -right-4 text-9xl opacity-10"></i>
-                    </div>
-
-                    <div className="space-y-3">
-                        {prayers.map(p => (
-                            <div key={p.name} className={`flex items-center justify-between p-5 rounded-3xl border transition-all ${p.isNext ? (darkMode ? 'bg-emerald-800/20 border-emerald-500' : 'bg-emerald-50 border-emerald-400 scale-[1.02]') : (darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100')}`}>
-                                <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${p.isNext ? 'bg-emerald-500 text-white' : 'bg-emerald-50 text-emerald-600'}`}>
-                                        <i className={`fas ${p.icon} text-xl`}></i>
-                                    </div>
-                                    <span className="font-bold text-lg">{p.name}</span>
-                                </div>
-                                <span className="font-black text-xl">{p.time}</span>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className={`p-6 rounded-3xl border ${darkMode ? 'bg-amber-900/10 border-amber-900/30 text-amber-200' : 'bg-amber-50 border-amber-100 text-amber-900'}`}>
-                        <div className="flex items-center space-x-2 rtl:space-x-reverse mb-2 opacity-60">
-                            <i className="fas fa-quote-left text-xs"></i>
-                            <span className="text-[10px] font-black uppercase">{t.inspirationTitle}</span>
-                        </div>
-                        <p className="italic font-bold leading-relaxed">"{inspiration.text}"</p>
-                        <p className="text-xs mt-3 text-right opacity-60">— {inspiration.source}</p>
-                    </div>
+        <main class="flex-1 p-6 space-y-6">
+            <div class="bg-emerald-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-lg">
+                <div class="relative z-10">
+                    <p class="opacity-80 font-medium">Prochaine Prière : Dhuhr</p>
+                    <h2 class="text-5xl font-black mt-2">12:35</h2>
+                    <p class="text-xs mt-4 opacity-70"><i class="fas fa-location-dot"></i> Casablanca, MA</p>
                 </div>
-            );
-        };
+                <i class="fas fa-mosque absolute -bottom-4 -right-4 text-9xl opacity-10"></i>
+            </div>
 
-        const Tasbih = () => {
-            const { t } = useContext(LanguageContext);
-            const { darkMode } = useContext(ThemeContext);
-            const [count, setCount] = useState(() => parseInt(localStorage.getItem('tasbih-count') || '0'));
-            const [total, setTotal] = useState(() => parseInt(localStorage.getItem('tasbih-total') || '0'));
-
-            useEffect(() => {
-                localStorage.setItem('tasbih-count', count);
-                localStorage.setItem('tasbih-total', total);
-            }, [count, total]);
-
-            const tick = () => {
-                if (count === 32 && navigator.vibrate) navigator.vibrate(100);
-                setCount((count + 1) % 34);
-                setTotal(total + 1);
-            };
-
-            return (
-                <div className="flex flex-col items-center py-10 space-y-12 animate-in">
-                    <div className="text-center">
-                        <h2 className="text-2xl font-black">{t.digitalTasbih}</h2>
-                        <p className="text-[10px] uppercase font-black opacity-40 mt-1 tracking-widest">Touchez le cercle</p>
-                    </div>
-
-                    <div onClick={tick} className={`w-72 h-72 rounded-full flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all shadow-2xl relative border-[12px] ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-emerald-50'}`}>
-                        <span className="text-8xl font-black">{count}</span>
-                        <span className="text-emerald-500 font-bold mt-2">/ 33</span>
-                        <div className="absolute inset-2 rounded-full border-4 border-emerald-500/10 border-t-emerald-500" style={{ transform: `rotate(${(count/33)*360}deg)` }}></div>
-                    </div>
-
-                    <div className="flex items-center space-x-6 rtl:space-x-reverse">
-                        <button onClick={() => setCount(0)} className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-200 transition-colors"><i className="fas fa-undo"></i></button>
-                        <div className="px-8 py-3 rounded-full bg-emerald-500 text-white font-black text-xs uppercase tracking-widest shadow-lg">{t.total}: {total}</div>
-                    </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
+                    <span class="font-bold text-emerald-800">Fajr</span>
+                    <span class="font-black">05:42</span>
                 </div>
-            );
-        };
-
-        const Assistant = () => {
-            const { t, lang } = useContext(LanguageContext);
-            const { darkMode } = useContext(ThemeContext);
-            const [messages, setMessages] = useState([{ role: 'model', parts: [{ text: t.assistantIntro }] }]);
-            const [input, setInput] = useState('');
-            const [loading, setLoading] = useState(false);
-            const scrollRef = useRef();
-
-            useEffect(() => scrollRef.current?.scrollIntoView({ behavior: 'smooth' }), [messages]);
-
-            const send = async () => {
-                if (!input.trim() || loading) return;
-                const msg = input; setInput('');
-                setMessages(prev => [...prev, { role: 'user', parts: [{ text: msg }] }]);
-                setLoading(true);
-                const reply = await chatWithAssistant(messages, msg, lang);
-                setMessages(prev => [...prev, { role: 'model', parts: [{ text: reply }] }]);
-                setLoading(false);
-            };
-
-            return (
-                <div className="h-[70vh] flex flex-col animate-in">
-                    <div className="flex-1 overflow-y-auto space-y-4 pr-2 no-scrollbar">
-                        {messages.map((m, i) => (
-                            <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-[85%] p-4 rounded-3xl text-sm leading-relaxed ${m.role === 'user' ? 'bg-emerald-500 text-white rounded-tr-none' : (darkMode ? 'bg-slate-800 text-slate-200 border border-slate-700' : 'bg-white border border-gray-100 text-black shadow-sm rounded-tl-none')}`}>
-                                    {m.parts[0].text}
-                                </div>
-                            </div>
-                        ))}
-                        {loading && <div className="text-[10px] font-black uppercase text-emerald-500 animate-pulse">Sajid écrit...</div>}
-                        <div ref={scrollRef}></div>
-                    </div>
-                    <div className="mt-4 relative">
-                        <input value={input} onChange={e => setInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && send()} placeholder={t.askQuestion} className={`w-full p-4 pr-14 rounded-2xl border-none focus:ring-2 focus:ring-emerald-500 ${darkMode ? 'bg-slate-800' : 'bg-gray-100'}`} />
-                        <button onClick={send} className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-emerald-500 text-white rounded-xl"><i className="fas fa-paper-plane"></i></button>
-                    </div>
+                <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+                    <span class="font-bold">Dhuhr</span>
+                    <span class="font-black">12:35</span>
                 </div>
-            );
-        };
-
-        const Library = () => {
-            const { t, darkMode } = useContext(ThemeContext);
-            const items = [
-                { title: 'Quran', icon: 'fa-book-quran', color: 'bg-emerald-500' },
-                { title: 'Azkar', icon: 'fa-sun', color: 'bg-amber-500' },
-                { title: 'Duas', icon: 'fa-hands-praying', color: 'bg-blue-500' }
-            ];
-            return (
-                <div className="grid grid-cols-1 gap-4 animate-in">
-                    {items.map(it => (
-                        <div key={it.title} className={`p-6 rounded-[2rem] border flex items-center shadow-sm cursor-pointer active:scale-95 transition-all ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'}`}>
-                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg mr-4 rtl:mr-0 rtl:ml-4 ${it.color}`}><i className={`fas ${it.icon}`}></i></div>
-                            <div className="flex-1">
-                                <h3 className="font-bold text-lg">{it.title}</h3>
-                                <p className="text-xs opacity-50">Parcourir les textes sacrés</p>
-                            </div>
-                            <i className="fas fa-chevron-right opacity-20"></i>
-                        </div>
-                    ))}
+                <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+                    <span class="font-bold">Asr</span>
+                    <span class="font-black">15:58</span>
                 </div>
-            );
-        }
+                <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+                    <span class="font-bold">Maghrib</span>
+                    <span class="font-black">18:12</span>
+                </div>
+            </div>
+        </main>
 
-        // --- 4. APP PRINCIPALE ---
-        const App = () => {
-            const [lang, setLang] = useState('fr');
-            const [darkMode, setDarkMode] = useState(false);
-            const t = translations[lang];
-            const location = useLocation();
-
-            return (
-                <LanguageContext.Provider value={{ lang, setLang, t }}>
-                    <ThemeContext.Provider value={{ darkMode }}>
-                        <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-black'}`} dir={t.dir}>
-                            <div className={`max-w-md mx-auto min-h-screen shadow-2xl relative flex flex-col transition-colors ${darkMode ? 'bg-slate-900' : 'bg-white'}`}>
-                                <header className="p-6 flex justify-between items-center">
-                                    <div>
-                                        <h1 className="text-3xl font-black tracking-tighter">{t.appName}</h1>
-                                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">{t.appSubtitle}</p>
-                                    </div>
-                                    <div className="flex space-x-2 rtl:space-x-reverse">
-                                        <button onClick={() => setDarkMode(!darkMode)} className={`w-10 h-10 rounded-2xl flex items-center justify-center ${darkMode ? 'bg-slate-800 text-yellow-400' : 'bg-emerald-50 text-emerald-600'}`}>
-                                            <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
-                                        </button>
-                                        <select value={lang} onChange={e => setLang(e.target.value)} className={`text-xs font-black p-2 rounded-2xl border-none appearance-none cursor-pointer ${darkMode ? 'bg-slate-800' : 'bg-gray-100'}`}>
-                                            <option value="ar">العربية</option>
-                                            <option value="fr">FR</option>
-                                            <option value="en">EN</option>
-                                        </select>
-                                    </div>
-                                </header>
-
-                                <main className="flex-1 p-6 pb-24 overflow-y-auto no-scrollbar">
-                                    <Routes>
-                                        <Route path="/" element={<Home />} />
-                                        <Route path="/tasbih" element={<Tasbih />} />
-                                        <Route path="/library" element={<Library />} />
-                                        <Route path="/assistant" element={<Assistant />} />
-                                    </Routes>
-                                </main>
-
-                                <nav className={`fixed bottom-0 left-0 right-0 max-w-md mx-auto p-5 flex justify-around items-center rounded-t-[2.5rem] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] border-t transition-colors ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-100'}`}>
-                                    {[
-                                        { to: '/', icon: 'fa-home', label: t.home },
-                                        { to: '/tasbih', icon: 'fa-beads', label: t.tasbih },
-                                        { to: '/library', icon: 'fa-book-quran', label: t.library },
-                                        { to: '/assistant', icon: 'fa-comment-dots', label: t.assistant }
-                                    ].map(link => (
-                                        <Link key={link.to} to={link.to} className={`flex flex-col items-center space-y-1 transition-all active:scale-90 ${location.pathname === link.to ? 'text-emerald-500' : 'text-slate-400'}`}>
-                                            <i className={`fas ${link.icon} text-xl`}></i>
-                                            <span className="text-[9px] font-black uppercase tracking-widest">{link.label}</span>
-                                        </Link>
-                                    ))}
-                                </nav>
-                            </div>
-                        </div>
-                    </ThemeContext.Provider>
-                </LanguageContext.Provider>
-            );
-        };
-
-        const root = createRoot(document.getElementById('root'));
-        root.render(<Router><App /></Router>);
-    </script>
+        <nav class="p-4 border-t flex justify-around items-center bg-white sticky bottom-0">
+            <div class="flex flex-col items-center text-emerald-600">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-[9px] font-bold mt-1">ACCUEIL</span>
+            </div>
+            <div class="flex flex-col items-center text-slate-400">
+                <i class="fas fa-beads text-xl"></i>
+                <span class="text-[9px] font-bold mt-1">TASBIH</span>
+            </div>
+            <div class="flex flex-col items-center text-slate-400">
+                <i class="fas fa-book-quran text-xl"></i>
+                <span class="text-[9px] font-bold mt-1">CORAN</span>
+            </div>
+            <div class="flex flex-col items-center text-slate-400">
+                <i class="fas fa-comment-dots text-xl"></i>
+                <span class="text-[9px] font-bold mt-1">SAJID AI</span>
+            </div>
+        </nav>
+    </div>
 </body>
 </html>
