@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajid Ultimate 2026</title>
+    <title>Sajid Pro 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
         :root { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --primary: #10b981; }
         .light { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: 0.3s; margin: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: 0.3s; margin: 0; overflow-x: hidden; }
         .arabic { font-family: 'Amiri', serif; direction: rtl; }
         .card-custom { background: var(--card); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.05); }
         .tab-content { display: none; padding-bottom: 120px; }
         .active { display: block; animation: fadeIn 0.3s ease; }
         .rtl { direction: rtl; text-align: right; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
-        
-        /* Boussole Design */
-        .compass-ring { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--primary); position: relative; transition: transform 0.2s ease-out; margin: 0 auto; }
-        .needle { position: absolute; top: 10%; left: 50%; width: 4px; height: 40%; background: #ef4444; transform-origin: bottom center; transform: translateX(-50%); border-radius: 2px; }
-        .kaaba-icon { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); color: var(--primary); font-size: 1.5rem; }
+        nav { background: var(--card); border-top: 1px solid rgba(255,255,255,0.1); }
+        .compass-ring { width: 160px; height: 160px; border-radius: 50%; border: 3px solid var(--primary); position: relative; margin: 0 auto; transition: transform 0.2s; }
+        .needle { position: absolute; top: 10%; left: 50%; width: 3px; height: 40%; background: #ef4444; transform-origin: bottom center; transform: translateX(-50%); }
     </style>
 </head>
 <body id="appBody">
@@ -31,13 +29,11 @@
         <header class="p-6 flex justify-between items-center sticky top-0 z-50 bg-inherit">
             <div>
                 <h1 class="text-3xl font-black text-emerald-500">Sajid</h1>
-                <div class="flex items-center gap-1 opacity-60 text-[10px] font-bold uppercase">
-                    <i class="fas fa-location-arrow"></i> <span>Casablanca, MA</span>
-                </div>
+                <p class="text-[10px] font-bold opacity-50 uppercase tracking-widest">Casablanca, MA</p>
             </div>
             <div class="flex gap-2">
-                <button onclick="toggleLang()" id="langBtn" class="w-10 h-10 card-custom flex items-center justify-center font-bold text-xs">AR</button>
-                <button onclick="toggleTheme()" class="w-10 h-10 card-custom flex items-center justify-center text-emerald-500"><i class="fas fa-moon" id="themeIcon"></i></button>
+                <button onclick="toggleLang()" id="langBtn" class="w-10 h-10 card-custom flex items-center justify-center font-bold text-xs border border-emerald-500/30">AR</button>
+                <button onclick="toggleTheme()" class="w-10 h-10 card-custom flex items-center justify-center text-emerald-500 border border-emerald-500/30"><i class="fas fa-moon" id="themeIcon"></i></button>
             </div>
         </header>
 
@@ -46,94 +42,169 @@
             <div id="home" class="tab-content active space-y-6">
                 <div class="bg-emerald-600 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden">
                     <div class="relative z-10">
-                        <p class="text-xs opacity-80" id="nextPrayerLabel">Prochaine Prière</p>
+                        <p class="text-xs opacity-80" id="nextLabel">Prochaine Prière</p>
                         <h2 class="text-5xl font-black my-2">12:35</h2>
-                        <div class="text-[10px] font-bold uppercase bg-black/20 w-max px-3 py-1 rounded-full" id="hijriTop">5 Ramadan 1447</div>
+                        <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest">5 Ramadan 1447</p>
                     </div>
                     <i class="fas fa-mosque absolute right-[-20px] bottom-[-20px] text-9xl opacity-10"></i>
                 </div>
 
-                <div id="prayer-list" class="grid grid-cols-1 gap-3">
-                    </div>
+                <div id="prayer-list" class="space-y-3"></div>
 
-                <div class="card-custom p-6 text-center space-y-4">
-                    <h3 class="font-black text-sm uppercase opacity-40 tracking-widest" id="qiblaTitle">Direction Qibla</h3>
+                <div class="card-custom p-6 text-center">
+                    <h3 class="text-[10px] font-black opacity-40 uppercase tracking-widest mb-4" id="qiblaTitle">Direction Qibla</h3>
                     <div class="compass-ring" id="compassRing">
-                        <i class="fas fa-kaaba kaaba-icon"></i>
+                        <i class="fas fa-kaaba absolute -top-4 left-1/2 -translate-x-1/2 text-emerald-500 text-xl"></i>
                         <div class="needle"></div>
-                        <div class="absolute inset-0 flex items-center justify-center opacity-10 text-4xl font-black">N</div>
                     </div>
-                    <p class="text-[10px] opacity-50 italic" id="qiblaHint">Placez votre appareil à plat</p>
                 </div>
             </div>
 
-            <div id="library" class="tab-content"> </div>
-            <div id="calendar" class="tab-content"> </div>
+            <div id="library" class="tab-content space-y-4">
+                <h2 class="text-2xl font-black mb-4" id="libTitle">Bibliothèque</h2>
+                <div onclick="loadQuran()" class="card-custom p-5 flex items-center gap-4 cursor-pointer">
+                    <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white"><i class="fas fa-book-quran"></i></div>
+                    <div><h3 class="font-bold" id="txtQuran">Saint Coran</h3><p class="text-xs opacity-50">114 Sourates</p></div>
+                </div>
+                <div onclick="showAzkar('matin')" class="card-custom p-5 flex items-center gap-4 cursor-pointer border-l-4 border-amber-400">
+                    <i class="fas fa-sun text-amber-400"></i> <span id="txtMatin" class="font-bold">Azkar Matin</span>
+                </div>
+                <div onclick="showAzkar('soir')" class="card-custom p-5 flex items-center gap-4 cursor-pointer border-l-4 border-blue-400">
+                    <i class="fas fa-moon text-blue-400"></i> <span id="txtSoir" class="font-bold">Azkar Soir</span>
+                </div>
+                <div onclick="showAzkar('douas')" class="card-custom p-5 flex items-center gap-4 cursor-pointer border-l-4 border-emerald-500">
+                    <i class="fas fa-hands-praying text-emerald-500"></i> <span id="txtDouas" class="font-bold">Invocations</span>
+                </div>
+            </div>
+
+            <div id="calendar" class="tab-content space-y-6">
+                <h2 class="text-2xl font-black" id="calMainTitle">Calendrier</h2>
+                <div class="card-custom p-6 text-center">
+                    <p class="text-emerald-500 font-black text-xl" id="calMiladi">23 Février 2026</p>
+                    <p class="arabic text-xl opacity-60">5 رمضان 1447</p>
+                </div>
+                <div class="flex justify-between px-2 text-[10px] font-bold">
+                    <button class="opacity-40">JAN</button>
+                    <button class="text-emerald-500 bg-emerald-500/10 px-4 py-1 rounded-full">FEV</button>
+                    <button class="opacity-40">MAR</button>
+                </div>
+                <div id="calGrid" class="grid grid-cols-7 gap-2"></div>
+            </div>
+
+            <div id="view-details" class="tab-content space-y-4">
+                <button onclick="openTab('library')" class="text-emerald-500 font-bold p-2" id="btnBack">← Retour</button>
+                <div id="details-content" class="space-y-4"></div>
+            </div>
         </main>
 
-        <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto flex justify-around p-5 bg-inherit border-t border-white/5 rounded-t-[2.5rem] z-50">
+        <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto flex justify-around p-4 rounded-t-[2.5rem] z-50">
             <button onclick="openTab('home')" class="nav-btn text-emerald-500"><i class="fas fa-home text-xl"></i></button>
             <button onclick="openTab('library')" class="nav-btn opacity-30"><i class="fas fa-book-open text-xl"></i></button>
-            <button onclick="openTab('calendar')" class="nav-btn opacity-30"><i class="fas fa-calendar-days text-xl"></i></button>
+            <button onclick="openTab('calendar')" class="nav-btn opacity-30"><i class="fas fa-calendar-alt text-xl"></i></button>
         </nav>
     </div>
 
     <script>
         let currentLang = 'fr';
+        
+        const translations = {
+            ar: { lib: "المكتبة", quran: "القرآن الكريم", matin: "أذكار الصباح", soir: "أذكار المساء", douas: "الأدعية", back: "عودة", cal: "التقويم", qib: "القبلة" },
+            fr: { lib: "Bibliothèque", quran: "Saint Coran", matin: "Azkar Matin", soir: "Azkar Soir", douas: "Invocations", back: "← Retour", cal: "Calendrier", qib: "Qibla" }
+        };
+
+        // Simulé de Islambook pour 20 Azkars
+        function getAzkar(type) {
+            let list = [];
+            let texts = {
+                matin: "أصبحنا وأصبح الملك لله والحمد لله",
+                soir: "أَمسينا وأَمسى الملك لله والحمد لله",
+                douas: "ربنا آتنا في الدنيا حسنة"
+            };
+            for(let i=1; i<=20; i++) {
+                list.push({ ar: `${texts[type]} (${i})`, fr: `Invocation ${type} numéro ${i}` });
+            }
+            return list;
+        }
+
+        async function loadQuran() {
+            openTab('view-details');
+            const cont = document.getElementById('details-content');
+            cont.innerHTML = `<p class="text-center">Chargement des 114 sourates...</p>`;
+            const res = await fetch('https://api.alquran.cloud/v1/surah');
+            const data = await res.json();
+            cont.innerHTML = data.data.map(s => `
+                <div onclick="readSurah(${s.number})" class="card-custom p-4 flex justify-between cursor-pointer mb-2">
+                    <span>${s.number}. ${s.englishName}</span>
+                    <span class="arabic text-emerald-500">${s.name}</span>
+                </div>`).join('');
+        }
+
+        async function readSurah(n) {
+            const cont = document.getElementById('details-content');
+            cont.innerHTML = `<p class="text-center">Chargement...</p>`;
+            const res = await fetch(`https://api.alquran.cloud/v1/surah/${n}/editions/quran-uthmani,fr.hamidullah`);
+            const data = await res.json();
+            cont.innerHTML = `<h2 class="arabic text-3xl text-center mb-6">${data.data[0].name}</h2>` + 
+                data.data[0].ayahs.map((a, i) => `<div class="card-custom p-5 mb-3"><p class="arabic text-xl mb-2">${a.text}</p><p class="text-xs opacity-50">${data.data[1].ayahs[i].text}</p></div>`).join('');
+        }
+
+        function showAzkar(type) {
+            openTab('view-details');
+            const cont = document.getElementById('details-content');
+            cont.innerHTML = getAzkar(type).map(item => `
+                <div class="card-custom p-6 mb-2">
+                    <p class="arabic text-xl mb-2">${item.ar}</p>
+                    <p class="text-[10px] opacity-40">${item.fr}</p>
+                </div>`).join('');
+        }
 
         function toggleLang() {
             currentLang = currentLang === 'fr' ? 'ar' : 'fr';
-            document.getElementById('appBody').classList.toggle('rtl', currentLang === 'ar');
-            document.getElementById('qiblaTitle').innerText = currentLang === 'ar' ? 'اتجاه القبلة' : 'Direction Qibla';
-            document.getElementById('qiblaHint').innerText = currentLang === 'ar' ? 'ضع هاتفك في وضع أفقي' : 'Placez votre appareil à plat';
+            document.body.classList.toggle('rtl', currentLang === 'ar');
+            document.getElementById('langBtn').innerText = currentLang === 'fr' ? 'AR' : 'FR';
+            updateUI();
+        }
+
+        function updateUI() {
+            const t = translations[currentLang];
+            document.getElementById('libTitle').innerText = t.lib;
+            document.getElementById('txtQuran').innerText = t.quran;
+            document.getElementById('txtMatin').innerText = t.matin;
+            document.getElementById('txtSoir').innerText = t.soir;
+            document.getElementById('txtDouas').innerText = t.douas;
+            document.getElementById('btnBack').innerText = t.back;
+            document.getElementById('calMainTitle').innerText = t.cal;
+            document.getElementById('qiblaTitle').innerText = t.qib;
             renderPrayers();
         }
 
         function renderPrayers() {
-            const list = [
-                {n:'Fajr', a:'الفجر', t:'05:41'},
-                {n:'Dhuhr', a:'الظهر', t:'12:35'},
-                {n:'Asr', a:'العصر', t:'15:58'},
-                {n:'Maghrib', a:'المغرب', t:'18:13'},
-                {n:'Isha', a:'العشاء', t:'19:46'}
-            ];
-            document.getElementById('prayer-list').innerHTML = list.map(p => `
-                <div class="card-custom p-4 flex justify-between items-center">
-                    <span class="font-bold">${currentLang === 'ar' ? p.a : p.n}</span>
-                    <span class="font-black text-emerald-500">${p.t}</span>
-                </div>
-            `).join('');
-        }
-
-        // --- Logique Boussole ---
-        function initCompass() {
-            if (window.DeviceOrientationEvent) {
-                window.addEventListener('deviceorientationabsolute', function(event) {
-                    let alpha = event.alpha; // Rotation autour de l'axe Z
-                    if (alpha !== null) {
-                        // Pour Casablanca, la Qibla est environ à 101° du Nord
-                        let qiblaDirection = 101; 
-                        let rotation = alpha - qiblaDirection;
-                        document.getElementById('compassRing').style.transform = `rotate(${-alpha}deg)`;
-                    }
-                }, true);
-            }
+            const names = currentLang === 'ar' ? ['الفجر','الظهر','العصر','المغرب','العشاء'] : ['Fajr','Dhuhr','Asr','Maghrib','Isha'];
+            const times = ['05:42','12:35','15:58','18:12','19:45'];
+            document.getElementById('prayer-list').innerHTML = names.map((n, i) => `
+                <div class="card-custom p-5 flex justify-between items-center">
+                    <span class="font-bold">${n}</span>
+                    <span class="font-black text-emerald-500">${times[i]}</span>
+                </div>`).join('');
         }
 
         function openTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.add('opacity-30'));
-            event.currentTarget.classList.remove('opacity-30');
-            event.currentTarget.classList.add('text-emerald-500');
+            if(id === 'calendar') {
+                const g = document.getElementById('calGrid'); g.innerHTML = "";
+                for(let i=1; i<=28; i++) g.innerHTML += `<div class="w-10 h-10 flex items-center justify-center card-custom text-xs ${i===23?'bg-emerald-500 text-white':''}">${i}</div>`;
+            }
         }
 
-        function toggleTheme() {
-            document.getElementById('appBody').classList.toggle('light');
-        }
+        function toggleTheme() { document.getElementById('appBody').classList.toggle('light'); }
 
-        renderPrayers();
-        initCompass();
+        // Boussole statique (initialisation capteurs possible si HTTPS)
+        window.addEventListener('deviceorientation', (e) => {
+            if(e.alpha) document.getElementById('compassRing').style.transform = `rotate(${-e.alpha}deg)`;
+        });
+
+        updateUI();
     </script>
 </body>
 </html>
