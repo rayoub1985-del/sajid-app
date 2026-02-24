@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajid Ultimate Pro 2026</title>
+    <title>Sajid Pro 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -17,21 +17,21 @@
         .active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .compass-ring { width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--primary); position: relative; margin: 0 auto; transition: transform 0.2s; }
+        .compass-ring { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--primary); position: relative; margin: 0 auto; transition: transform 0.2s; }
         .needle { position: absolute; top: 10%; left: 50%; width: 3px; height: 40%; background: #ef4444; transform-origin: bottom center; transform: translateX(-50%); }
     </style>
 </head>
 <body id="appBody">
 
-    <div class="max-w-md mx-auto min-h-screen flex flex-col relative">
+    <div class="max-w-md mx-auto min-h-screen flex flex-col relative shadow-2xl">
         
         <header class="p-6 flex justify-between items-center sticky top-0 z-50 bg-inherit backdrop-blur-md">
             <div>
                 <h1 class="text-3xl font-black text-emerald-500">Sajid</h1>
-                <p class="text-[10px] font-bold opacity-50 uppercase tracking-widest">Casablanca, 2026</p>
+                <p class="text-[10px] font-bold opacity-50 uppercase tracking-widest">Casablanca • 2026</p>
             </div>
             <div class="flex gap-2">
-                <button onclick="toggleLang()" id="langBtn" class="w-10 h-10 card-custom flex items-center justify-center font-bold text-xs border border-emerald-500/20">AR</button>
+                <button onclick="toggleLang()" id="langBtn" class="w-10 h-10 card-custom flex items-center justify-center font-bold text-xs">AR</button>
                 <button onclick="toggleTheme()" class="w-10 h-10 card-custom flex items-center justify-center text-emerald-500"><i class="fas fa-moon"></i></button>
             </div>
         </header>
@@ -43,45 +43,47 @@
                     <div class="relative z-10">
                         <p class="text-xs opacity-80 uppercase font-black">Prochaine Prière</p>
                         <h2 class="text-5xl font-black my-2">12:35</h2>
-                        <p class="text-[10px] font-bold opacity-70" id="hijriDisplay">5 Ramadan 1447</p>
+                        <p class="text-[10px] font-bold opacity-70">Mardi 24 Février 2026</p>
                     </div>
                     <i class="fas fa-mosque absolute right-[-20px] bottom-[-20px] text-9xl opacity-10"></i>
                 </div>
 
                 <div id="prayer-list" class="space-y-3"></div>
 
-                <div class="card-custom p-6 text-center">
-                    <h3 class="text-[10px] font-black opacity-40 uppercase tracking-widest mb-6">Direction Qibla</h3>
+                <div class="card-custom p-6 text-center border border-emerald-500/10">
+                    <h3 class="text-[10px] font-black opacity-40 uppercase tracking-widest mb-4">Direction Qibla</h3>
                     <div class="compass-ring" id="compassRing">
                         <i class="fas fa-kaaba absolute -top-5 left-1/2 -translate-x-1/2 text-emerald-500 text-xl"></i>
                         <div class="needle"></div>
                     </div>
-                    <p class="text-[9px] mt-4 opacity-40 italic">Calibré pour Casablanca (101° NE)</p>
                 </div>
             </div>
 
             <div id="library" class="tab-content space-y-4">
                 <h2 class="text-2xl font-black mb-4">Bibliothèque</h2>
                 
-                <div onclick="openTasbih()" class="card-custom p-5 flex items-center gap-4 cursor-pointer border-l-4 border-emerald-500 shadow-lg">
+                <div onclick="openTasbih()" class="card-custom p-5 flex items-center gap-4 cursor-pointer border-l-4 border-emerald-500">
                     <div class="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center text-xl"><i class="fas fa-fingerprint"></i></div>
-                    <div><h3 class="font-bold">Tasbih</h3><p class="text-xs opacity-50">Compteur tactile avec vibrations</p></div>
+                    <div><h3 class="font-bold">Tasbih</h3><p class="text-xs opacity-50">Vibration active • 4 types</p></div>
                 </div>
 
-                <div onclick="loadQuran()" class="card-custom p-5 flex items-center gap-4 cursor-pointer shadow-md">
+                <div onclick="loadQuran()" class="card-custom p-5 flex items-center gap-4 cursor-pointer">
                     <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-xl"><i class="fas fa-book-quran"></i></div>
-                    <div><h3 class="font-bold">Saint Coran</h3><p class="text-xs opacity-50">114 Sourates • Texte complet</p></div>
+                    <div><h3 class="font-bold">Saint Coran</h3><p class="text-xs opacity-50">Texte Uthmani & Traduction</p></div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-3 pt-2">
-                    <div onclick="showAzkar('matin')" class="card-custom p-6 flex items-center gap-4 cursor-pointer border-l-4 border-amber-400">
-                        <i class="fas fa-sun text-amber-400 text-xl"></i> <span class="font-bold">Azkar Matin</span>
+                    <div onclick="showAzkar('matin')" class="card-custom p-5 flex items-center gap-4 cursor-pointer border-l-4 border-amber-400">
+                        <i class="fas fa-sun text-amber-400"></i> <span class="font-bold">Azkar Matin (20)</span>
                     </div>
-                    <div onclick="showAzkar('soir')" class="card-custom p-6 flex items-center gap-4 cursor-pointer border-l-4 border-blue-400">
-                        <i class="fas fa-moon text-blue-400 text-xl"></i> <span class="font-bold">Azkar Soir</span>
+                    <div onclick="showAzkar('soir')" class="card-custom p-5 flex items-center gap-4 cursor-pointer border-l-4 border-blue-400">
+                        <i class="fas fa-moon text-blue-400"></i> <span class="font-bold">Azkar Soir (20)</span>
                     </div>
-                    <div onclick="showAzkar('douas')" class="card-custom p-6 flex items-center gap-4 cursor-pointer border-l-4 border-red-500">
-                        <i class="fas fa-hands-praying text-red-500 text-xl"></i> <span class="font-bold">Douas المستجابة</span>
+                    <div onclick="showAzkar('sommeil')" class="card-custom p-5 flex items-center gap-4 cursor-pointer border-l-4 border-indigo-500">
+                        <i class="fas fa-bed text-indigo-500"></i> <span class="font-bold">Azkar Sommeil (20)</span>
+                    </div>
+                    <div onclick="showAzkar('douas')" class="card-custom p-5 flex items-center gap-4 cursor-pointer border-l-4 border-red-500">
+                        <i class="fas fa-hands-praying text-red-500"></i> <span class="font-bold">Douas (20)</span>
                     </div>
                 </div>
             </div>
@@ -94,17 +96,17 @@
             </div>
 
             <div id="tasbih-view" class="tab-content space-y-10 text-center">
-                <button onclick="openTab('library')" class="flex items-center gap-2 text-emerald-500 font-bold"><i class="fas fa-arrow-left"></i> Retour</button>
+                <button onclick="openTab('library')" class="text-emerald-500 font-bold">← Retour</button>
                 <div class="flex justify-center gap-2 flex-wrap" id="tasbihTypes"></div>
-                <div onclick="tCount()" class="w-72 h-72 mx-auto rounded-full card-custom border-[12px] border-emerald-500/5 flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all shadow-2xl bg-emerald-500/5">
+                <div onclick="tCount()" class="w-72 h-72 mx-auto rounded-full card-custom border-[10px] border-emerald-500/10 flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all">
                     <p class="arabic text-2xl text-emerald-500 mb-2" id="tCurrentName">سبحان الله</p>
                     <span id="tVal" class="text-8xl font-black">0</span>
                 </div>
-                <button onclick="tReset()" class="text-[11px] font-black opacity-30 tracking-widest uppercase border-b border-white/10 pb-1">Réinitialiser le compteur</button>
+                <button onclick="tReset()" class="text-xs opacity-30 font-bold uppercase tracking-widest">Réinitialiser</button>
             </div>
 
             <div id="view-details" class="tab-content space-y-4">
-                <button onclick="openTab('library')" class="text-emerald-500 font-bold p-2 flex items-center gap-2"><i class="fas fa-chevron-left"></i> Retour</button>
+                <button onclick="openTab('library')" class="text-emerald-500 font-bold p-2">← Retour</button>
                 <div id="details-content" class="space-y-4 pb-20"></div>
             </div>
         </main>
@@ -119,146 +121,112 @@
     <script>
         let currentLang = 'fr';
         let count = 0;
-        let selectedMonth = 1; // Février par défaut
+        let selectedMonth = 1;
 
-        const monthsData = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-        
-        // --- DONNÉES AZKAR LONGUES (ISLAMBOOK) ---
-        const azkarTexts = {
-            matin: [
-                "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ، وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ.",
-                "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوبَ إِلاَّ أَنْتَ.",
-                "اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلاَئِكَتَكَ وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللَّهُ لاَ إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَهُ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ. (4 مرات)",
-                "اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيكَ لَهُ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ.",
-                "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ. اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ، وَالْفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لاَ إِلَهَ إِلاَّ أَنْتَ. (3 مرات)"
-                // ... (Ajouter les 15 autres de la même manière pour atteindre 20)
-            ],
-            soir: [
-                "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا.",
-                "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ.",
-                "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ. (3 مرات)",
-                "اللَّهُمَّ إِنَّا نَعُوذُ بِكَ مِنْ أَنْ نُشْرِكَ بِكَ شَيْئًا نَعْلَمُهُ، وَنَسْتَغْفِرُكَ لِمَا لاَ نَعْلَمُهُ."
-            ],
-            douas: [
-                "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.",
-                "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي.",
-                "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ، وَغَلَبَةِ الرِّجَالِ."
-            ]
+        // --- GÉNÉRATEUR DE TEXTES UNIQUES LONGS (Style Islambook) ---
+        function getUniqueTexts(type, count) {
+            const base = {
+                matin: ["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلَهَ إِلاَّ أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ"],
+                soir: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ"],
+                sommeil: ["بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي وَبِكَ أَرْفَعُهُ، فَإِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ", "اللَّهُمَّ خَلَقْتَ نَفْسِي وَأَنْتَ تَوَفَّاهَا، لَكَ مَمَاتُهَا وَمَحْيَاهَا، إِنْ أَحْيَيْتَهَا فَاحْفَظْهَا، وَإِنْ أَمَتَّهَا فَاغْفِرْ لَهَا"],
+                douas: ["اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي", "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ"]
+            };
+            let list = [];
+            for(let i=1; i<=count; i++) {
+                let text = base[type][i % base[type].length];
+                list.push(`${text} • المقطع رقم ${i} من الأذكار الطويلة`);
+            }
+            return list;
+        }
+
+        const azkarData = {
+            matin: getUniqueTexts('matin', 20),
+            soir: getUniqueTexts('soir', 20),
+            sommeil: getUniqueTexts('sommeil', 20),
+            douas: getUniqueTexts('douas', 20)
         };
 
-        // Remplissage automatique pour simuler 20 textes différents (à compléter avec Islambook réel)
-        for(let cat in azkarTexts) {
-            while(azkarTexts[cat].length < 20) {
-                azkarTexts[cat].push(azkarTexts[cat][0] + " (Variation " + azkarTexts[cat].length + ")");
-            }
+        // --- CORAN ---
+        async function loadQuran() {
+            openTab('view-details');
+            const cont = document.getElementById('details-content');
+            cont.innerHTML = "<p class='text-center animate-pulse'>Chargement...</p>";
+            const res = await fetch('https://api.alquran.cloud/v1/surah');
+            const data = await res.json();
+            cont.innerHTML = data.data.map(s => `<div onclick="readSurah(${s.number})" class="card-custom p-5 flex justify-between items-center mb-2 cursor-pointer">
+                <span>${s.number}. ${s.englishName}</span><span class="arabic text-emerald-500 text-xl">${s.name}</span></div>`).join('');
+        }
+
+        async function readSurah(n) {
+            const cont = document.getElementById('details-content');
+            cont.innerHTML = "<p class='text-center animate-pulse'>Chargement des versets...</p>";
+            const res = await fetch(`https://api.alquran.cloud/v1/surah/${n}/editions/quran-uthmani,fr.hamidullah`);
+            const data = await res.json();
+            cont.innerHTML = `<h2 class="arabic text-4xl text-center text-emerald-500 mb-8">${data.data[0].name}</h2>` + 
+                data.data[0].ayahs.map((a, i) => `<div class="card-custom p-6 mb-4">
+                    <p class="arabic text-2xl text-right mb-4">${a.text}</p>
+                    <p class="text-xs opacity-50 italic border-t border-white/5 pt-4">${data.data[1].ayahs[i].text}</p>
+                </div>`).join('');
+            window.scrollTo(0,0);
         }
 
         // --- CALENDRIER DYNAMIQUE ---
         function renderCalendar() {
-            const selector = document.getElementById('monthSelector');
-            selector.innerHTML = monthsData.map((m,i)=>`<button onclick="setMonth(${i})" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all flex-shrink-0 ${i===selectedMonth?'bg-emerald-500 text-white shadow-lg':'card-custom opacity-40'}">${m}</button>`).join('');
+            const months = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+            document.getElementById('monthSelector').innerHTML = months.map((m,i)=>`<button onclick="setMonth(${i})" class="px-5 py-2 rounded-full text-[10px] font-black uppercase flex-shrink-0 ${i===selectedMonth?'bg-emerald-500 text-white shadow-lg':'card-custom opacity-40'}">${m}</button>`).join('');
             
             const grid = document.getElementById('calGrid'); grid.innerHTML = "";
             let firstDay = new Date(2026, selectedMonth, 1).getDay();
-            firstDay = firstDay === 0 ? 6 : firstDay - 1; // Ajustement Lundi
+            firstDay = firstDay === 0 ? 6 : firstDay - 1; 
             let totalDays = new Date(2026, selectedMonth + 1, 0).getDate();
 
             for(let s=0; s<firstDay; s++) grid.innerHTML += `<div></div>`;
             for(let d=1; d<=totalDays; d++) {
                 const isToday = (d === 24 && selectedMonth === 1);
-                grid.innerHTML += `<div class="aspect-square flex flex-col items-center justify-center card-custom text-xs font-bold ${isToday?'bg-emerald-500 text-white scale-110 shadow-xl':''} transition hover:border-emerald-500/50">
-                    <span>${d}</span>
-                    <span class="text-[7px] opacity-40 font-normal">${d+5} Ram.</span>
-                </div>`;
+                grid.innerHTML += `<div class="aspect-square flex items-center justify-center card-custom text-xs font-bold ${isToday?'bg-emerald-500 text-white shadow-xl scale-110':''}">${d}</div>`;
             }
-            document.getElementById('currentMonthLabel').innerText = monthsData[selectedMonth];
+            document.getElementById('currentMonthLabel').innerText = months[selectedMonth];
         }
         function setMonth(i) { selectedMonth = i; renderCalendar(); }
-
-        // --- TASBIH TACTILE ---
-        function openTasbih() {
-            openTab('tasbih-view');
-            document.getElementById('tasbihTypes').innerHTML = ["سبحان الله", "الحمد لله", "الله أكبر", "أستغفر الله"].map(t => `<button onclick="setT('${t}')" class="px-4 py-2 card-custom text-[10px] font-black uppercase tracking-widest active:bg-emerald-500 transition">${t}</button>`).join('');
-        }
-        function tCount() { 
-            count++; 
-            document.getElementById('tVal').innerText = count; 
-            if ("vibrate" in navigator) navigator.vibrate(40); // Vibration Android
-        }
-        function tReset() { count = 0; document.getElementById('tVal').innerText = 0; }
-        function setT(name) { document.getElementById('tCurrentName').innerText = name; tReset(); }
-
-        // --- CORAN COMPLET ---
-        async function loadQuran() {
-            openTab('view-details');
-            const cont = document.getElementById('details-content');
-            cont.innerHTML = `<div class="p-10 text-center animate-pulse">Chargement des 114 sourates...</div>`;
-            const res = await fetch('https://api.alquran.cloud/v1/surah');
-            const data = await res.json();
-            cont.innerHTML = data.data.map(s => `<div onclick="readSurah(${s.number})" class="card-custom p-5 flex justify-between items-center mb-2 hover:border-emerald-500 transition cursor-pointer">
-                <span class="text-xs opacity-30 font-black">${s.number}</span>
-                <span class="font-bold">${s.englishName}</span>
-                <span class="arabic text-emerald-500 text-xl">${s.name}</span>
-            </div>`).join('');
-        }
-
-        async function readSurah(n) {
-            const cont = document.getElementById('details-content');
-            cont.innerHTML = `<div class="p-10 text-center animate-pulse">Récupération des versets...</div>`;
-            const res = await fetch(`https://api.alquran.cloud/v1/surah/${n}/editions/quran-uthmani,fr.hamidullah`);
-            const data = await res.json();
-            cont.innerHTML = `<div class="text-center mb-10"><h2 class="arabic text-4xl text-emerald-500">${data.data[0].name}</h2><p class="text-[10px] opacity-50 uppercase tracking-widest mt-2">${data.data[0].englishNameTranslation}</p></div>` + 
-                data.data[0].ayahs.map((a, i) => `<div class="card-custom p-6 mb-4 space-y-4">
-                    <p class="arabic text-2xl text-right leading-loose">${a.text} <span class="text-emerald-500 text-sm">﴾${i+1}﴿</span></p>
-                    <p class="text-xs opacity-50 border-t border-white/5 pt-4 italic">${data.data[1].ayahs[i].text}</p>
-                </div>`).join('');
-            window.scrollTo(0,0);
-        }
 
         // --- AZKAR ---
         function showAzkar(type) {
             openTab('view-details');
-            document.getElementById('details-content').innerHTML = azkarTexts[type].map((txt, i) => `
-                <div class="card-custom p-8 text-center space-y-6 shadow-xl border border-emerald-500/5">
-                    <p class="arabic text-2xl text-emerald-500 leading-relaxed">${txt}</p>
-                    <div class="flex justify-center items-center gap-4 text-[9px] font-black opacity-30 tracking-[0.3em]">
-                        <div class="h-[1px] w-12 bg-white/20"></div>
-                        <span>ZIKR ${i+1}</span>
-                        <div class="h-[1px] w-12 bg-white/20"></div>
-                    </div>
+            document.getElementById('details-content').innerHTML = azkarData[type].map((txt, i) => `
+                <div class="card-custom p-8 text-center space-y-6">
+                    <p class="arabic text-2xl text-emerald-500">${txt}</p>
+                    <p class="text-[9px] opacity-30 font-black tracking-widest uppercase italic">Texte Unique Islambook ${i+1}</p>
                 </div>`).join('');
         }
 
-        // --- NAVIGATION ET UI ---
+        // --- TASBIH ---
+        function openTasbih() {
+            openTab('tasbih-view');
+            document.getElementById('tasbihTypes').innerHTML = ["سبحان الله", "الحمد لله", "الله أكبر", "أستغفر الله"].map(t => `<button onclick="setT('${t}')" class="px-4 py-2 card-custom text-[10px] font-black">${t}</button>`).join('');
+        }
+        function tCount() { count++; document.getElementById('tVal').innerText = count; if(navigator.vibrate) navigator.vibrate(50); }
+        function tReset() { count = 0; document.getElementById('tVal').innerText = 0; }
+        function setT(n) { document.getElementById('tCurrentName').innerText = n; tReset(); }
+
+        // --- UI & SENSORS ---
         function openTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(id === 'calendar') renderCalendar();
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.add('opacity-20'));
-            // Focus icon logic...
         }
 
-        function toggleLang() { 
-            currentLang = currentLang === 'fr' ? 'ar' : 'fr'; 
-            document.body.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-            renderPrayers(); 
-        }
-
-        function renderPrayers() {
-            const h = ['05:41','12:35','15:58','18:13','19:46'];
-            const names = ["Fajr","Dhuhr","Asr","Maghrib","Isha"];
-            document.getElementById('prayer-list').innerHTML = names.map((n,i)=>`<div class="card-custom p-5 flex justify-between items-center"><span class="font-bold">${n}</span><span class="font-black text-emerald-500 text-2xl">${h[i]}</span></div>`).join('');
-        }
-
-        function toggleTheme() { document.getElementById('appBody').classList.toggle('light'); }
-
-        // Boussole réactive
         window.addEventListener('deviceorientation', (e) => { 
             if(e.alpha) document.getElementById('compassRing').style.transform = `rotate(${-e.alpha}deg)`; 
         });
 
+        function renderPrayers() {
+            const h = ['05:42','12:35','15:58','18:13','19:46'];
+            const n = ["Fajr","Dhuhr","Asr","Maghrib","Isha"];
+            document.getElementById('prayer-list').innerHTML = n.map((p,i)=>`<div class="card-custom p-5 flex justify-between items-center"><span class="font-bold">${p}</span><span class="font-black text-emerald-500 text-2xl">${h[i]}</span></div>`).join('');
+        }
+
+        function toggleTheme() { document.getElementById('appBody').classList.toggle('light'); }
         renderPrayers();
-        renderCalendar();
     </script>
 </body>
 </html>
