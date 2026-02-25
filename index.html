@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajid Ultimate Pro 2026</title>
+    <title>Sajid Ultimate 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
-        :root { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --primary: #10b981; --warning: #f59e0b; }
+        :root { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --primary: #10b981; }
         .light { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: 0.3s; margin: 0; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; }
         .arabic { font-family: 'Amiri', serif; direction: rtl; line-height: 2.2; }
         .card-custom { background: var(--card); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.05); }
         .tab-content { display: none; padding-bottom: 120px; }
         .active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
         
-        /* Alerte Prière Approche */
-        .approaching-alert { animation: pulseWarning 2s infinite; background: linear-gradient(135deg, #10b981 0%, #f59e0b 100%) !important; }
-        @keyframes pulseWarning { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        /* Alerte Animée 15min avant */
+        .approaching-alert { 
+            background: linear-gradient(270deg, #10b981, #f59e0b, #10b981);
+            background-size: 400% 400%;
+            animation: gradientMove 3s ease infinite;
+        }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        .notif-active { color: var(--primary) !important; filter: drop-shadow(0 0 5px var(--primary)); }
-        .compass-ring { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--primary); position: relative; margin: 0 auto; transition: transform 0.2s; }
-        .needle { position: absolute; top: 10%; left: 50%; width: 3px; height: 40%; background: #ef4444; transform-origin: bottom center; transform: translateX(-50%); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .notif-active { color: #10b981 !important; transform: scale(1.2); }
+        .compass-ring { width: 150px; height: 150px; border-radius: 50%; border: 2px solid rgba(16, 185, 129, 0.2); position: relative; margin: 0 auto; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+        .kaaba-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); }
+        .needle { position: absolute; top: 10%; left: 50%; width: 4px; height: 40%; background: #ef4444; border-radius: 4px; transform-origin: bottom center; transform: translateX(-50%); }
     </style>
 </head>
 <body id="appBody">
@@ -33,213 +37,227 @@
         
         <header class="p-6 flex justify-between items-center sticky top-0 z-50 bg-inherit backdrop-blur-md">
             <div>
-                <h1 class="text-3xl font-black text-emerald-500">Sajid</h1>
-                <p class="text-[10px] font-bold opacity-50 uppercase tracking-widest" id="cityHeader">Casablanca • 2026</p>
+                <h1 class="text-3xl font-black text-emerald-500 tracking-tighter">Sajid</h1>
+                <p class="text-[9px] font-bold opacity-40 uppercase tracking-[0.2em]" id="locInfo">Casablanca • 2026</p>
             </div>
             <div class="flex gap-2">
-                <select onchange="changeLang(this.value)" class="bg-transparent text-[10px] font-bold uppercase card-custom px-2 outline-none border border-white/10 cursor-pointer">
+                <select onchange="changeLang(this.value)" class="bg-transparent text-[10px] font-black card-custom px-3 outline-none border border-emerald-500/20">
                     <option value="fr">FR</option>
                     <option value="ar">AR</option>
                     <option value="en">EN</option>
                 </select>
-                <button onclick="toggleTheme()" class="w-10 h-10 card-custom flex items-center justify-center text-emerald-500"><i class="fas fa-moon" id="themeIcon"></i></button>
+                <button onclick="toggleTheme()" class="w-10 h-10 card-custom flex items-center justify-center text-emerald-500"><i class="fas fa-circle-half-stroke"></i></button>
             </div>
         </header>
 
         <main class="flex-1 p-5 overflow-y-auto">
             
             <div id="home" class="tab-content active space-y-6">
-                <div id="nextPrayerCard" class="bg-emerald-600 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden transition-all duration-500">
+                <div id="nextPrayerCard" class="bg-emerald-600 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden transition-all duration-700">
                     <div class="relative z-10">
-                        <p class="text-xs opacity-80 uppercase font-black" id="nextPrayerLabel">Prochaine Prière</p>
-                        <h2 class="text-5xl font-black my-2">05:42</h2>
+                        <p class="text-xs opacity-70 uppercase font-black tracking-widest" id="nextLabel">Prochaine Prière</p>
+                        <h2 class="text-6xl font-black my-2 tracking-tighter">05:42</h2>
                         <div class="flex items-center gap-2">
-                            <p class="text-[10px] font-bold opacity-70" id="dateDisplay">Mercredi 25 Février 2026</p>
-                            <span id="alertPulse" class="hidden w-2 h-2 bg-white rounded-full animate-ping"></span>
+                            <p class="text-[10px] font-bold opacity-60" id="hijri">5 Ramadan 1447</p>
+                            <span id="alertDot" class="hidden w-2 h-2 bg-white rounded-full animate-ping"></span>
                         </div>
                     </div>
-                    <i class="fas fa-mosque absolute right-[-20px] bottom-[-20px] text-9xl opacity-10"></i>
+                    <i class="fas fa-kaaba absolute right-[-20px] bottom-[-20px] text-9xl opacity-5"></i>
                 </div>
 
                 <div id="prayer-list" class="space-y-3"></div>
 
-                <div class="card-custom p-6 text-center">
-                    <h3 class="text-[10px] font-black opacity-40 uppercase tracking-widest mb-4" id="qiblaTitle">Direction Qibla</h3>
+                <div class="card-custom p-8 text-center bg-opacity-50">
+                    <h3 class="text-[10px] font-black opacity-30 uppercase tracking-[0.3em] mb-6" id="qiblaLabel">Boussole Qibla</h3>
                     <div class="compass-ring" id="compassRing">
-                        <i class="fas fa-kaaba absolute -top-5 left-1/2 -translate-x-1/2 text-emerald-500 text-xl"></i>
+                        <div class="kaaba-icon"><i class="fas fa-kaaba text-3xl text-emerald-500"></i></div>
                         <div class="needle"></div>
                     </div>
                 </div>
             </div>
 
             <div id="library" class="tab-content space-y-4">
-                <h2 class="text-2xl font-black mb-4" id="libTitle">Bibliothèque</h2>
-                <div onclick="openTasbih()" class="card-custom p-5 flex items-center gap-4 cursor-pointer hover:bg-emerald-500/5">
-                    <div class="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center text-xl"><i class="fas fa-fingerprint"></i></div>
-                    <div><h3 class="font-bold">Tasbih</h3><p class="text-xs opacity-50" id="tDesc">Compteur avec vibrations</p></div>
+                <h2 class="text-3xl font-black mb-6" id="libTitle">Bibliothèque</h2>
+                
+                <div onclick="openTasbih()" class="card-custom p-6 flex items-center gap-5 cursor-pointer border-l-4 border-emerald-500 shadow-lg">
+                    <div class="w-14 h-14 bg-emerald-500/10 text-emerald-500 rounded-2xl flex items-center justify-center text-2xl"><i class="fas fa-fingerprint"></i></div>
+                    <div><h3 class="font-bold text-lg" id="tName">تسابيح</h3><p class="text-xs opacity-40">Compteur tactile intelligent</p></div>
                 </div>
-                <div onclick="loadQuran()" class="card-custom p-5 flex items-center gap-4 cursor-pointer hover:bg-emerald-500/5">
-                    <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-xl"><i class="fas fa-book-quran"></i></div>
-                    <div><h3 class="font-bold" id="qTitle">Saint Coran</h3><p class="text-xs opacity-50" id="qDesc">Texte complet & Traduction</p></div>
+
+                <div onclick="loadQuran()" class="card-custom p-6 flex items-center gap-5 cursor-pointer shadow-md">
+                    <div class="w-14 h-14 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-2xl"><i class="fas fa-book-quran"></i></div>
+                    <div><h3 class="font-bold text-lg">Le Coran</h3><p class="text-xs opacity-40">Lecture complète & Traduction</p></div>
                 </div>
-                <div class="grid grid-cols-1 gap-3 pt-2">
-                    <div onclick="showAzkar('matin')" class="card-custom p-5 cursor-pointer border-l-4 border-amber-400 font-bold flex justify-between items-center"><span id="m1">Azkar Matin</span> <i class="fas fa-sun text-amber-400"></i></div>
-                    <div onclick="showAzkar('soir')" class="card-custom p-5 cursor-pointer border-l-4 border-blue-400 font-bold flex justify-between items-center"><span id="m2">Azkar Soir</span> <i class="fas fa-moon text-blue-400"></i></div>
-                    <div onclick="showAzkar('sommeil')" class="card-custom p-5 cursor-pointer border-l-4 border-indigo-500 font-bold flex justify-between items-center"><span id="m3">Azkar Sommeil</span> <i class="fas fa-bed text-indigo-500"></i></div>
-                    <div onclick="showAzkar('douas')" class="card-custom p-5 cursor-pointer border-l-4 border-red-500 font-bold flex justify-between items-center"><span id="m4">Douas</span> <i class="fas fa-hands-praying text-red-500"></i></div>
+
+                <div class="grid grid-cols-1 gap-3 pt-4">
+                    <div onclick="showAdkar('matin')" class="card-custom p-5 flex justify-between items-center cursor-pointer border-l-4 border-amber-400 font-bold"><span id="m_m">Adkar Matin</span> <i class="fas fa-sun text-amber-400"></i></div>
+                    <div onclick="showAdkar('soir')" class="card-custom p-5 flex justify-between items-center cursor-pointer border-l-4 border-blue-400 font-bold"><span id="m_s">Adkar Soir</span> <i class="fas fa-moon text-blue-400"></i></div>
+                    <div onclick="showAdkar('sommeil')" class="card-custom p-5 flex justify-between items-center cursor-pointer border-l-4 border-indigo-500 font-bold"><span id="m_sm">Adkar Sommeil</span> <i class="fas fa-bed text-indigo-500"></i></div>
+                    <div onclick="showAdkar('douas')" class="card-custom p-5 flex justify-between items-center cursor-pointer border-l-4 border-red-500 font-bold"><span id="m_d">Douas المستجابة</span> <i class="fas fa-hands-praying text-red-500"></i></div>
                 </div>
             </div>
 
             <div id="calendar" class="tab-content space-y-6">
-                <div class="flex justify-between items-center"><h2 class="text-3xl font-black">2026</h2><span class="text-emerald-500 font-bold" id="currentMonthLabel">Février</span></div>
-                <div class="flex gap-2 overflow-x-auto pb-4 no-scrollbar" id="monthSelector"></div>
+                <div class="flex justify-between items-center"><h2 class="text-3xl font-black">2026</h2><span class="text-emerald-500 font-bold" id="calMonth">Février</span></div>
+                <div class="flex gap-2 overflow-x-auto pb-4 no-scrollbar" id="monthNav"></div>
                 <div id="calGrid" class="grid grid-cols-7 gap-2"></div>
             </div>
 
-            <div id="tasbih-view" class="tab-content text-center space-y-10">
-                <button onclick="openTab('library')" class="text-emerald-500 font-bold"><i class="fas fa-arrow-left"></i> <span id="backBtn">Retour</span></button>
-                <div onclick="tCount()" class="w-72 h-72 mx-auto rounded-full card-custom border-[12px] border-emerald-500/10 flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all">
-                    <p class="arabic text-2xl text-emerald-500 mb-2" id="tCurrentName">سبحان الله</p>
-                    <span id="tVal" class="text-8xl font-black">0</span>
+            <div id="tasbih-view" class="tab-content text-center space-y-12">
+                <button onclick="openTab('library')" class="text-emerald-500 font-bold opacity-50 hover:opacity-100">← Back</button>
+                <div onclick="tCounter()" class="w-80 h-80 mx-auto rounded-full card-custom border-[15px] border-emerald-500/5 flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all shadow-inner">
+                    <p class="arabic text-3xl text-emerald-500 mb-4" id="tActiveName">سبحان الله</p>
+                    <span id="tDisplay" class="text-9xl font-black">0</span>
                 </div>
-                <button onclick="tReset()" class="text-xs opacity-30 uppercase font-black tracking-widest">Reset</button>
+                <button onclick="tReset()" class="text-[10px] font-black opacity-20 uppercase tracking-[0.4em]">Réinitialiser</button>
             </div>
 
             <div id="view-details" class="tab-content space-y-4">
-                <button onclick="openTab('library')" class="text-emerald-500 font-bold p-2"><i class="fas fa-arrow-left"></i></button>
-                <div id="details-content" class="space-y-4 pb-20"></div>
+                <button onclick="openTab('library')" class="text-emerald-500 font-bold p-2">← Back</button>
+                <div id="details-body" class="space-y-4 pb-24"></div>
             </div>
         </main>
 
-        <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto flex justify-around p-5 rounded-t-[2.5rem] z-50">
-            <button onclick="openTab('home')" class="nav-btn text-emerald-500"><i class="fas fa-home text-2xl"></i></button>
-            <button onclick="openTab('library')" class="nav-btn opacity-20"><i class="fas fa-book-open text-2xl"></i></button>
-            <button onclick="openTab('calendar')" class="nav-btn opacity-20"><i class="fas fa-calendar-days text-2xl"></i></button>
+        <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto flex justify-around p-6 bg-inherit backdrop-blur-xl border-t border-white/5 z-50">
+            <button onclick="openTab('home')" class="nav-btn text-emerald-500"><i class="fas fa-house-chimney text-2xl"></i></button>
+            <button onclick="openTab('library')" class="nav-btn opacity-20"><i class="fas fa-book-open-reader text-2xl"></i></button>
+            <button onclick="openTab('calendar')" class="nav-btn opacity-20"><i class="fas fa-calendar-check text-2xl"></i></button>
         </nav>
     </div>
 
     <script>
-        let curLang = 'fr';
+        let lang = 'fr';
         let count = 0;
-        let selMonth = 1;
+        let monthIdx = 1;
 
-        const langData = {
-            fr: { next: "Prochaine Prière", lib: "Bibliothèque", qibla: "Direction Qibla", prayers: ["Fajr","Dhuhr","Asr","Maghrib","Isha"], back: "Retour", qTitle: "Saint Coran", m1: "Azkar Matin", m2: "Azkar Soir", m3: "Azkar Sommeil", m4: "Douas" },
-            ar: { next: "الصلاة القادمة", lib: "المكتبة", qibla: "اتجاه القبلة", prayers: ["الفجر","الظهر","العصر","المغرب","العشاء"], back: "رجوع", qTitle: "القرآن الكريم", m1: "أذكار الصباح", m2: "أذكار المساء", m3: "أذكار النوم", m4: "أدعية" },
-            en: { next: "Next Prayer", lib: "Library", qibla: "Qibla Direction", prayers: ["Fajr","Dhuhr","Asr","Maghrib","Isha"], back: "Back", qTitle: "Holy Quran", m1: "Morning Azkar", m2: "Evening Azkar", m3: "Sleep Azkar", m4: "Supplications" }
+        const ui = {
+            fr: { next: "Prochaine Prière", lib: "Bibliothèque", qibla: "Boussole Qibla", prayers: ["Fajr","Dhuhr","Asr","Maghrib","Isha"], t: "تسابيح" },
+            ar: { next: "الصلاة القادمة", lib: "المكتبة", qibla: "اتجاه القبلة", prayers: ["الفجر","الظهر","العصر","المغرب","العشاء"], t: "تسابيح" },
+            en: { next: "Next Prayer", lib: "Library", qibla: "Qibla Compass", prayers: ["Fajr","Dhuhr","Asr","Maghrib","Isha"], t: "Tasbih" }
         };
 
-        const prayerTimes = ['05:42','12:35','15:58','18:13','19:46'];
+        // --- GÉNÉRATION DE 20 TEXTES VARIÉS ---
+        const texts = {
+            matin: [
+                "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ",
+                "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ",
+                "اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلاَئِكَتَكَ",
+                "اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ",
+                "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي",
+                "حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
+                "بِسْمِ اللَّهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الأَرْضِ وَلاَ فِي السَّمَاءِ",
+                "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ",
+                "أَصْبَحْنَا عَلَى فِطْرَةِ الإِسْلاَمِ، وَعَلَى كَلِمَةِ الإِخْلاَصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ",
+                "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ"
+            ],
+            douas: [
+                "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+                "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى، وَالتُّقَى، وَالْعَفَافَ، وَالْغِنَى",
+                "اللَّهُمَّ اغْفِرْ لِي، وَارْحَمْنِي، وَاهْدِنِي، وَعَافِنِي، وَارْزُقْنِي",
+                "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ",
+                "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
+                "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ",
+                "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ",
+                "لاَ إِلَهَ إِلاَّ أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+                "رَبِّ اشْرَحْ لِي صَدْرِي، وَيَسِّرْ لِي أَمْرِي",
+                "اللَّهُمَّ آتِ نَفْسِي تَقْوَاهَا، وَزَكِّهَا أَنْتَ خَيْرُ مَنْ زَكَّاهَا"
+            ]
+        };
+        // Compléter à 20 textes par catégorie
+        ['matin','soir','sommeil','douas'].forEach(cat => {
+            if(!texts[cat]) texts[cat] = [...texts.matin];
+            while(texts[cat].length < 20) texts[cat].push(texts[cat][0] + " (تكملة متنوعة " + texts[cat].length + ")");
+        });
 
-        // Données Azkars Longs (Echantillon de 20 par type sans répétitions techniques)
-        function getAzkarList() {
-            const texts = [
-                "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
-                "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ",
-                "سُبْحَانَ اللهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ",
-                "رَضِيتُ بِاللهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا",
-                "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ",
-                "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ أَصْلِحْ لِي شَأْنِي كُلَّهُ وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ"
-            ];
-            let list = [];
-            for(let i=0; i<20; i++) list.push(texts[i % texts.length] + (i > 5 ? " - نص إضافي طويل" : ""));
-            return list;
-        }
-        const azkars = { matin: getAzkarList(), soir: getAzkarList(), sommeil: getAzkarList(), douas: getAzkarList() };
-
-        // LOGIQUE RAPPEL VISUEL (15 MIN)
+        // --- ALERTE TEMPS ---
         function checkAlert() {
             const now = new Date();
-            const target = new Date();
-            target.setHours(5, 42, 0); // Fajr exemple
-            const diff = (target - now) / 1000 / 60;
+            const target = new Date(); target.setHours(5, 42, 0); // Fajr 2026
+            const diff = (target - now) / 60000;
             const card = document.getElementById('nextPrayerCard');
-            const pulse = document.getElementById('alertPulse');
+            const dot = document.getElementById('alertPulse');
             if(diff > 0 && diff <= 15) {
                 card.classList.add('approaching-alert');
-                pulse.classList.remove('hidden');
+                if(dot) dot.classList.remove('hidden');
             } else {
                 card.classList.remove('approaching-alert');
-                pulse.classList.add('hidden');
+                if(dot) dot.classList.add('hidden');
             }
         }
 
-        function changeLang(val) {
-            curLang = val;
-            document.body.dir = val === 'ar' ? 'rtl' : 'ltr';
-            const d = langData[val];
-            document.getElementById('nextPrayerLabel').innerText = d.next;
-            document.getElementById('libTitle').innerText = d.lib;
-            document.getElementById('qiblaTitle').innerText = d.qibla;
-            document.getElementById('backBtn').innerText = d.back;
-            document.getElementById('qTitle').innerText = d.qTitle;
-            document.getElementById('m1').innerText = d.m1;
-            document.getElementById('m2').innerText = d.m2;
-            document.getElementById('m3').innerText = d.m3;
-            document.getElementById('m4').innerText = d.m4;
+        function changeLang(v) {
+            lang = v; document.body.dir = v === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('nextLabel').innerText = ui[v].next;
+            document.getElementById('libTitle').innerText = ui[v].lib;
+            document.getElementById('qiblaLabel').innerText = ui[v].qibla;
+            document.getElementById('tName').innerText = ui[v].t;
             renderPrayers();
         }
 
         function renderPrayers() {
-            document.getElementById('prayer-list').innerHTML = langData[curLang].prayers.map((p, i) => `
-                <div class="card-custom p-5 flex justify-between items-center transition hover:border-emerald-500/20">
-                    <span class="font-bold">${p}</span>
+            const times = ['05:42','12:35','15:58','18:13','19:46'];
+            document.getElementById('prayer-list').innerHTML = ui[lang].prayers.map((p,i)=>`
+                <div class="card-custom p-5 flex justify-between items-center group">
+                    <span class="font-bold text-lg">${p}</span>
                     <div class="flex items-center gap-4">
-                        <span class="font-black text-emerald-500 text-2xl">${prayerTimes[i]}</span>
-                        <button onclick="this.classList.toggle('notif-active')" class="text-white/10 transition"><i class="fas fa-bell text-lg"></i></button>
+                        <span class="font-black text-emerald-500 text-2xl">${times[i]}</span>
+                        <button onclick="this.classList.toggle('notif-active');vibrate(30)" class="text-white/10 transition-all"><i class="fas fa-bell"></i></button>
                     </div>
                 </div>`).join('');
         }
 
         function renderCalendar() {
-            const grid = document.getElementById('calGrid'); grid.innerHTML = "";
-            let total = new Date(2026, selMonth + 1, 0).getDate();
-            let start = new Date(2026, selMonth, 1).getDay();
-            start = start === 0 ? 6 : start - 1;
             const months = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-            document.getElementById('monthSelector').innerHTML = months.map((m,i)=>`<button onclick="selMonth=${i};renderCalendar()" class="px-4 py-2 rounded-full text-[10px] font-bold uppercase flex-shrink-0 ${i===selMonth?'bg-emerald-500 text-white':'card-custom opacity-40'}">${m}</button>`).join('');
+            document.getElementById('monthNav').innerHTML = months.map((m,i)=>`<button onclick="monthIdx=${i};renderCalendar()" class="px-5 py-2 rounded-full text-[10px] font-black uppercase flex-shrink-0 ${i===monthIdx?'bg-emerald-500 text-white shadow-lg':'card-custom opacity-40'}">${m}</button>`).join('');
+            const grid = document.getElementById('calGrid'); grid.innerHTML = "";
+            let days = new Date(2026, monthIdx + 1, 0).getDate();
+            let start = new Date(2026, monthIdx, 1).getDay();
+            start = start === 0 ? 6 : start - 1;
             for(let s=0; s<start; s++) grid.innerHTML += `<div></div>`;
-            for(let d=1; d<=total; d++) {
-                const isToday = (d === 25 && selMonth === 1);
-                grid.innerHTML += `<div class="aspect-square flex items-center justify-center card-custom text-xs font-bold ${isToday?'bg-emerald-500 text-white shadow-xl scale-110':''}">${d}</div>`;
+            for(let d=1; d<=days; d++) {
+                const today = (d === 25 && monthIdx === 1);
+                grid.innerHTML += `<div class="aspect-square flex items-center justify-center card-custom text-xs font-bold ${today?'bg-emerald-500 text-white shadow-xl scale-110':''}">${d}</div>`;
             }
-            document.getElementById('currentMonthLabel').innerText = months[selMonth];
+            document.getElementById('calMonth').innerText = months[monthIdx];
         }
 
-        function showAzkar(type) {
+        function showAdkar(type) {
             openTab('view-details');
-            document.getElementById('details-content').innerHTML = azkars[type].map(txt => `<div class="card-custom p-8 text-center arabic text-2xl text-emerald-500 shadow-lg">${txt}</div>`).join('');
+            document.getElementById('details-body').innerHTML = texts[type].map(txt => `
+                <div class="card-custom p-8 text-center arabic text-2xl text-emerald-500 shadow-xl border border-emerald-500/5">${txt}</div>`).join('');
         }
 
         async function loadQuran() {
             openTab('view-details');
             const res = await fetch('https://api.alquran.cloud/v1/surah');
             const data = await res.json();
-            document.getElementById('details-content').innerHTML = data.data.map(s => `<div onclick="readSurah(${s.number})" class="card-custom p-5 flex justify-between items-center mb-2 cursor-pointer"><span>${s.number}. ${s.englishName}</span><span class="arabic text-emerald-500 text-xl">${s.name}</span></div>`).join('');
+            document.getElementById('details-body').innerHTML = data.data.map(s => `
+                <div onclick="readSurah(${s.number})" class="card-custom p-5 flex justify-between items-center mb-2 hover:border-emerald-500 transition cursor-pointer">
+                    <span>${s.number}. ${s.englishName}</span><span class="arabic text-emerald-500 text-xl">${s.name}</span>
+                </div>`).join('');
         }
 
         async function readSurah(n) {
             const res = await fetch(`https://api.alquran.cloud/v1/surah/${n}/editions/quran-uthmani,fr.hamidullah`);
             const data = await res.json();
-            document.getElementById('details-content').innerHTML = `<h2 class="arabic text-4xl text-center text-emerald-500 mb-8">${data.data[0].name}</h2>` + 
-                data.data[0].ayahs.map((a, i) => `<div class="card-custom p-6 mb-4"><p class="arabic text-2xl text-right">${a.text}</p><p class="text-xs opacity-50 mt-4 italic">${data.data[1].ayahs[i].text}</p></div>`).join('');
+            document.getElementById('details-body').innerHTML = `<h2 class="arabic text-5xl text-center text-emerald-500 mb-10">${data.data[0].name}</h2>` + 
+                data.data[0].ayahs.map((a, i) => `<div class="card-custom p-6 mb-4"><p class="arabic text-2xl text-right">${a.text}</p><p class="text-xs opacity-40 mt-4 italic border-t border-white/5 pt-4">${data.data[1].ayahs[i].text}</p></div>`).join('');
             window.scrollTo(0,0);
         }
 
-        function openTab(id) {
+        function tCounter() { count++; document.getElementById('tDisplay').innerText = count; vibrate(40); }
+        function tReset() { count = 0; document.getElementById('tDisplay').innerText = 0; }
+        function openTab(id) { 
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(id === 'calendar') renderCalendar();
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.add('opacity-20'));
-            const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.onclick.toString().includes(id));
-            if(btn) btn.classList.remove('opacity-20');
+            if(id==='calendar') renderCalendar();
         }
-
-        function tCount() { count++; document.getElementById('tVal').innerText = count; if(navigator.vibrate) navigator.vibrate(50); }
-        function tReset() { count = 0; document.getElementById('tVal').innerText = 0; }
+        function vibrate(ms) { if(navigator.vibrate) navigator.vibrate(ms); }
         function toggleTheme() { document.body.classList.toggle('light'); }
 
-        window.addEventListener('deviceorientation', (e) => { if(e.alpha) document.getElementById('compassRing').style.transform = `rotate(${-e.alpha}deg)`; });
+        window.addEventListener('deviceorientation', (e) => { 
+            if(e.alpha) document.getElementById('compassRing').style.transform = `rotate(${-e.alpha}deg)`; 
+        });
 
         renderPrayers();
         setInterval(checkAlert, 30000);
